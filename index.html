@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Russell M. Duran</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@500;600&family=Rubik:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0c16;
+    --panel:#121528;
+    --panel-2:#181c35;
+    --line:rgba(255,255,255,.09);
+    --purple:#8b5cf6;
+    --cyan:#22d3ee;
+    --pink:#f472b6;
+    --text:#e6e9f5;
+    --muted:#98a0bd;
+    --grad:linear-gradient(120deg,var(--purple),var(--cyan));
+    --radius:20px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:70px}
+  body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:46px 46px}
+  a{text-decoration:none;color:inherit}
+  ul{list-style:none}
+  h1,h2,h3{font-family:'Orbitron',sans-serif}
+
+  /* ---------- NAVBAR ---------- */
+  .navbar{position:sticky;top:0;z-index:1000;background:#0A1931;box-shadow:0 4px 20px rgba(0,0,0,.35)}
+  .nav-inner{max-width:1150px;margin:auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:center}
+  .logo{display:none;font-family:'Poppins',sans-serif;color:#fff;font-weight:600;font-size:1.1rem;letter-spacing:.5px}
+  .logo span{color:var(--cyan)}
+  .nav-links{display:flex;gap:10px}
+  .nav-links a{font-family:'Poppins',sans-serif;color:#fff;font-size:.95rem;font-weight:500;padding:8px 18px;border-radius:50px;transition:.3s}
+  .nav-links a:hover,.nav-links a.active{color:var(--cyan);background:rgba(34,211,238,.12)}
+  #menu-toggle{display:none}
+  .hamburger{display:none;cursor:pointer;flex-direction:column;gap:5px}
+  .hamburger span{width:26px;height:3px;background:var(--cyan);border-radius:3px}
+
+  /* ---------- SHARED ---------- */
+  section{padding:80px 24px 70px}
+  .wrap{max-width:1100px;margin:auto}
+  .title{text-align:center;margin-bottom:50px}
+  .title small{font-family:'Orbitron',sans-serif;color:var(--cyan);letter-spacing:4px;font-size:.72rem}
+  .title h2{font-size:2.2rem;margin-top:6px;font-weight:900}
+  .title h2 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .reveal{opacity:0;transform:translateY(30px);transition:.8s}
+  .reveal.show{opacity:1;transform:none}
+
+  /* ---------- HOME ---------- */
+  #home{min-height:calc(100vh - 68px);display:flex;align-items:center;position:relative;overflow:hidden}
+  .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;z-index:0}
+  .b1{width:380px;height:380px;background:var(--purple);top:60px;left:-120px}
+  .b2{width:340px;height:340px;background:var(--cyan);bottom:20px;right:-100px;opacity:.35}
+  .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;position:relative;z-index:1}
+  .chip{display:inline-flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);
+    padding:7px 18px;border-radius:40px;font-size:.82rem;color:var(--muted)}
+  .chip i{width:9px;height:9px;border-radius:50%;background:#34d399;box-shadow:0 0 10px #34d399;animation:blink 1.6s infinite}
+  @keyframes blink{50%{opacity:.35}}
+  .hero h1{font-size:3.4rem;line-height:1.15;font-weight:900;margin:20px 0 14px}
+  .hero h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--muted);max-width:480px;font-size:1.02rem}
+  .btns{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+  .btn{padding:14px 32px;border-radius:14px;font-weight:600;font-size:.95rem;transition:.3s}
+  .btn.main{background:var(--grad);color:#fff;box-shadow:0 8px 28px rgba(139,92,246,.45)}
+  .btn.main:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(34,211,238,.45)}
+  .btn.ghost{border:1px solid var(--cyan);color:var(--cyan)}
+  .btn.ghost:hover{background:rgba(34,211,238,.12);transform:translateY(-4px)}
+
+  .avatar-box{position:relative;display:flex;justify-content:center}
+  .hex{width:300px;height:340px;padding:5px;background:var(--grad);
+    clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);animation:float 5s ease-in-out infinite;
+    filter:drop-shadow(0 0 28px rgba(139,92,246,.6))}
+  .hex-in{width:100%;height:100%;background:var(--panel-2);position:relative;overflow:hidden;
+    clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);display:flex;align-items:center;justify-content:center}
+  .hex-in b{font-family:'Orbitron',sans-serif;font-size:4.4rem;font-weight:900;color:rgba(255,255,255,.12)}
+  .hex-in img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  .float-ico{position:absolute;font-size:1.7rem;background:var(--panel);border:1px solid var(--line);width:58px;height:58px;
+    border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(0,0,0,.5);animation:float 4s ease-in-out infinite}
+  .f1{top:10px;left:8%}
+  .f2{bottom:40px;left:4%;animation-delay:1s}
+  .f3{top:50px;right:6%;animation-delay:.5s}
+
+  /* ---------- ABOUT ---------- */
+  .about{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:stretch}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:34px;transition:.35s}
+  .panel:hover{border-color:rgba(139,92,246,.6);box-shadow:0 0 35px rgba(139,92,246,.2);transform:translateY(-5px)}
+  .panel h3{font-size:1.25rem;margin-bottom:14px}
+  .panel h3 span{color:var(--cyan)}
+  .panel p{color:var(--muted);font-size:.97rem;margin-bottom:12px}
+  .stat{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px dashed var(--line);font-size:.93rem}
+  .stat:last-child{border:none}
+  .stat span{color:var(--muted)}
+  .stat b{font-weight:500;color:var(--cyan);text-align:right}
+
+  /* ---------- EDUCATION ---------- */
+  .tl{position:relative;max-width:760px;margin:auto;padding-left:34px}
+  .tl::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:3px;background:var(--grad);border-radius:3px}
+  .tl-item{position:relative;margin-bottom:22px}
+  .tl-item:last-child{margin-bottom:0}
+  .tl-item::before{content:"";position:absolute;left:-34px;top:28px;width:19px;height:19px;border-radius:50%;
+    background:var(--bg);border:4px solid var(--cyan);box-shadow:0 0 14px rgba(34,211,238,.7)}
+  .tl-year{display:inline-block;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:1px;color:var(--cyan);
+    background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.3);padding:3px 14px;border-radius:40px;margin-bottom:10px}
+  .tl-item h3{font-size:1.05rem;margin-bottom:4px}
+  .tl-item p{margin:0;color:var(--muted);font-size:.93rem}
+
+  /* ---------- ACHIEVEMENTS (2 pictures only) ---------- */
+  .ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:920px;margin:auto}
+  .ach-card{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--panel);
+    border:1px solid var(--line);box-shadow:0 14px 40px rgba(0,0,0,.45);transition:.4s}
+  .ach-card:hover{transform:translateY(-10px);border-color:var(--cyan);
+    box-shadow:0 0 40px rgba(34,211,238,.3),0 18px 45px rgba(0,0,0,.5)}
+  .ach-card img{display:block;width:100%;height:640px;object-fit:cover;object-position:center;transition:transform .6s}
+  .ach-card.two img{object-position:center 45%}
+  .ach-card:hover img{transform:scale(1.06)}
+
+  /* ---------- GOALS ---------- */
+  .goal-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .goal-grid .panel p.sub{font-size:.82rem;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+  .goal-grid li{position:relative;padding:11px 0 11px 36px;border-bottom:1px dashed var(--line);color:var(--muted);font-size:.95rem}
+  .goal-grid li:last-child{border:none}
+  .goal-grid li::before{content:"✔";position:absolute;left:0;top:10px;width:24px;height:24px;border-radius:50%;background:var(--grad);
+    color:#fff;font-size:.72rem;display:flex;align-items:center;justify-content:center}
+
+  /* ---------- SKILLS ---------- */
+  .skills{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .skill{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:30px 20px;text-align:center;transition:.35s;position:relative;overflow:hidden}
+  .skill::before{content:"";position:absolute;inset:0;background:var(--grad);opacity:0;transition:.4s}
+  .skill:hover{transform:translateY(-8px);border-color:transparent;box-shadow:0 0 35px rgba(34,211,238,.3)}
+  .skill:hover::before{opacity:.12}
+  .skill>*{position:relative}
+  .ring{width:112px;height:112px;margin:0 auto 18px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:conic-gradient(var(--cyan) calc(var(--p)*1%),rgba(255,255,255,.08) 0)}
+  .ring div{width:92px;height:92px;border-radius:50%;background:var(--panel-2);display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .em{font-size:1.5rem;line-height:1}
+  .ring b{font-family:'Orbitron',sans-serif;font-size:.95rem;color:var(--cyan);margin-top:4px}
+  .skill h3{font-size:.95rem;font-weight:700;letter-spacing:.5px}
+  .skill p{color:var(--muted);font-size:.84rem;margin-top:4px}
+
+  /* ---------- CONTACT ---------- */
+  .contact{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .c-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:34px 22px;text-align:center;transition:.35s;display:block}
+  .c-card:hover{transform:translateY(-8px);border-color:var(--cyan);box-shadow:0 0 35px rgba(34,211,238,.25)}
+  .c-ico{width:66px;height:66px;margin:0 auto 16px;border-radius:18px;background:var(--grad);display:flex;
+    align-items:center;justify-content:center;font-size:1.7rem;box-shadow:0 8px 24px rgba(139,92,246,.4)}
+  .c-card small{display:block;color:var(--muted);font-size:.74rem;letter-spacing:2px;text-transform:uppercase}
+  .c-card strong{display:block;font-weight:500;font-size:.98rem;margin-top:4px;word-break:break-word}
+  footer{text-align:center;padding:34px 20px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);margin-top:50px}
+  footer span{color:var(--cyan)}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:900px){
+    .hero,.about{grid-template-columns:1fr}
+    .hero{text-align:center}
+    .hero p{margin:auto}
+    .btns{justify-content:center}
+    .avatar-box{order:-1}
+    .hex{width:240px;height:275px}
+    .hero h1{font-size:2.5rem}
+    .skills,.contact{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:700px){
+    .nav-inner{justify-content:space-between}
+    .logo{display:block}
+    .hamburger{display:flex}
+    .nav-links{position:absolute;top:68px;left:0;right:0;background:#0A1931;flex-direction:column;gap:0;
+      max-height:0;overflow:hidden;transition:max-height .4s}
+    .nav-links a{display:block;border-radius:0;padding:15px 24px;border-top:1px solid rgba(255,255,255,.08)}
+    #menu-toggle:checked ~ .nav-links{max-height:440px}
+  }
+  @media(max-width:900px){
+    .nav-links{gap:2px}
+    .nav-links a{padding:8px 12px;font-size:.88rem}
+    .ach-card img{height:520px}
+    .goal-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:700px){
+    .nav-links{gap:0}
+    .nav-links a{font-size:.95rem;padding:15px 24px}
+    .ach-grid{grid-template-columns:1fr}
+    .ach-card img{height:460px}
+  }
+  @media(max-width:560px){
+    .skills,.contact{grid-template-columns:1fr}
+    .hero h1{font-size:2rem}
+    .title h2{font-size:1.7rem}
+    .f1,.f3{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="logo">Russell<span>.</span></a>
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="hamburger" aria-label="Menu"><span></span><span></span><span></span></label>
+    <ul class="nav-links">
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#about">About Me</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#goals">Goals</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HOME -->
+<section id="home">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="wrap hero">
+    <div>
+      <div class="chip"><i></i> Player Online</div>
+      <h1>I'm <span>Russell M. Duran</span></h1>
+      <p>I am a first-year BSBA student majoring in Financial Management,
+        passionate about learning business, finance, and entrepreneurship.
+         I aim to develop my financial knowledge, decision-making,
+         and problem-solving skills to prepare for future career opportunities.
+          I believe that hard work, discipline, and continuous learning are the keys to personal
+          growth and success.</p>
+      <div class="btns">
+        <a href="#contact" class="btn main">Contact Me</a>
+        <a href="#skills" class="btn ghost">My Skills</a>
+      </div>
+    </div>
+    <div class="avatar-box">
+      <div class="hex">
+        <div class="hex-in">
+          <b>RD</b>
+          <!-- Put your photo in the same folder as this file and name it russell.jpg -->
+          <img src="image1.png" alt="Russell M. Duran" onerror="this.style.display='none'">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="title reveal">
+      <small>PLAYER PROFILE</small>
+      <h2>About <span>Me</span></h2>
+    </div>
+    <div class="about">
+      <div class="panel reveal">
+        <h3>Hello, I'm <span>Russell</span> 👋</h3>
+        <p>Gaming is my biggest passion. I enjoy playing with friends, working as a team, and getting better with every match.</p>
+        <p>Through gaming I learned patience, quick thinking, and how to stay calm under pressure. I'm still learning and growing, and I'm excited to build more skills along the way.</p>
+      </div>
+      <div class="panel reveal">
+        <h3>Player <span>Card</span></h3>
+        <div class="stat"><span>Name</span><b>Russell M. Duran</b></div>
+        <div class="stat"><span>Class</span><b>Gamer 🎮</b></div>
+        <div class="stat"><span>Play Style</span><b>Team Player</b></div>
+        <div class="stat"><span>Status</span><b>Always Learning</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="wrap">
+    <div class="title reveal">
+      <small>LEVEL HISTORY</small>
+      <h2>My <span>Education</span></h2>
+    </div>
+    <div class="tl">
+      <div class="tl-item reveal">
+        <div class="panel">
+          <span class="tl-year">2014 – 2019</span>
+          <h3>Elementary</h3>
+          <p>Ipil Central Elementary School</p>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="panel">
+          <span class="tl-year">2020 – 2024</span>
+          <h3>Junior High School</h3>
+          <p>Dr. Aurelio Mendoza Memorial Colleges</p>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="panel">
+          <span class="tl-year">2025 – 2026</span>
+          <h3>Senior High School</h3>
+          <p>Dr. Aurelio Mendoza Memorial Colleges</p>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="panel">
+          <span class="tl-year">2026 – Present</span>
+          <h3>College</h3>
+          <p>Dr. Aurelio Mendoza Memorial Colleges</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="wrap">
+    <div class="title reveal">
+      <small>TROPHY ROOM</small>
+      <h2>My <span>Achievements</span></h2>
+    </div>
+    <div class="ach-grid">
+      <!-- Save the Service Award photo in the same folder as this file and name it achievement1.png -->
+      <div class="ach-card reveal">
+        <img src="image2.png" alt="Service Award">
+      </div>
+      <!-- Save the Certificate of Completion photo in the same folder and name it achievement2.png -->
+      <div class="ach-card two reveal">
+        <img src="image3.png" alt="Certificate of Completion">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOALS -->
+<section id="goals">
+  <div class="wrap">
+    <div class="title reveal">
+      <small>NEXT QUESTS</small>
+      <h2>My <span>Goals</span></h2>
+    </div>
+    <div class="goal-grid">
+      <div class="panel reveal">
+        <h3>Short-Term <span>Goals</span></h3>
+        <p class="sub">This Year</p>
+        <ul>
+          <li>Keep improving my gaming skills</li>
+          <li>Do well in my studies</li>
+          <li>Learn new things every day</li>
+          <li>Build more friendships and teamwork</li>
+        </ul>
+      </div>
+      <div class="panel reveal">
+        <h3>Long-Term <span>Goals</span></h3>
+        <p class="sub">The Future</p>
+        <ul>
+          <li>Finish my studies and graduate</li>
+          <li>Build a career I enjoy</li>
+          <li>Keep growing as a player and a person</li>
+          <li>Make my family proud</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="title reveal">
+      <small>SKILL TREE</small>
+      <h2>My <span>Skills</span></h2>
+    </div>
+    <div class="skills">
+      <div class="skill reveal">
+        <div class="ring" style="--p:85"><div><span class="em">🎮</span><b>85%</b></div></div>
+        <h3>GAMING</h3><p>Fast reactions &amp; game sense</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ring" style="--p:80"><div><span class="em">🤝</span><b>80%</b></div></div>
+        <h3>TEAMWORK</h3><p>Plays well with others</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ring" style="--p:75"><div><span class="em">🧩</span><b>75%</b></div></div>
+        <h3>PROBLEM SOLVING</h3><p>Finds a way to win</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ring" style="--p:75"><div><span class="em">💻</span><b>75%</b></div></div>
+        <h3>COMPUTER BASICS</h3><p>Comfortable with devices</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ring" style="--p:70"><div><span class="em">💬</span><b>70%</b></div></div>
+        <h3>COMMUNICATION</h3><p>Clear in-game callouts</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ring" style="--p:80"><div><span class="em">⚡</span><b>80%</b></div></div>
+        <h3>QUICK LEARNER</h3><p>Adapts fast to new things</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="title reveal">
+      <small>JOIN MY SQUAD</small>
+      <h2>Contact <span>Me</span></h2>
+    </div>
+    <div class="contact">
+      <a class="c-card reveal" href="tel:09518245131">
+        <div class="c-ico">📞</div>
+        <small>Phone</small>
+        <strong>09518245131</strong>
+      </a>
+      <a class="c-card reveal" href="#contact">
+        <div class="c-ico">💬</div>
+        <small>Facebook</small>
+        <strong>Russell Duran</strong>
+      </a>
+      <a class="c-card reveal" href="mailto:duranrussell68@gmail.com">
+        <div class="c-ico">✉️</div>
+        <small>Email</small>
+        <strong>duranrussell68@gmail.com</strong>
+      </a>
+    </div>
+  </div>
+  <footer>© 2026 <span>Russell M. Duran</span> • All rights reserved.</footer>
+</section>
+
+<script>
+  // Fade-in on scroll
+  const items = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    items.forEach(i => io.observe(i));
+  } else {
+    items.forEach(i => i.classList.add('show'));
+  }
+  // Highlight the active link while scrolling + close mobile menu on tap
+  const secs = [...document.querySelectorAll('section')];
+  const links = document.querySelectorAll('.nav-links a');
+  function setActive(){
+    let cur = 'home';
+    secs.forEach(sec => { if (window.scrollY >= sec.offsetTop - 160) cur = sec.id; });
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+  }
+  addEventListener('scroll', setActive);
+  setActive();
+  links.forEach(a => a.addEventListener('click', () => document.getElementById('menu-toggle').checked = false));
+</script>
+</body>
+</html>
